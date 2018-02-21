@@ -282,7 +282,7 @@ public class DefendIt
 
         File inputFile = new File(filename);
         return inputFile;
-
+//
     }
 
     public static BufferedWriter writeToFile(File outputFile){
