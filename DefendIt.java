@@ -104,13 +104,13 @@ public class DefendIt
         System.exit(0);
     }
 
-    public static String getName()
+    private static String getName()
     {
         System.out.print("Please enter a name (less than 50 characters long): ");
         return kb.nextLine();
     }
 
-    public static boolean checkName(String name)
+    private static boolean checkName(String name)
     {
         if(name.isEmpty() || name.length() > 50)
             return false;
@@ -125,13 +125,13 @@ public class DefendIt
         return false;
     }
 
-    public static String getPassword()
+    private static String getPassword()
     {
         System.out.print("Please enter a password that contains at least 10 characters and includes at least one upper case character, one lower case character, one digit, one punctuation mark: ");
         return kb.nextLine();
     }
 
-    public static boolean checkPass(String pass)
+    private static boolean checkPass(String pass)
     {
         String exp = "^((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%]).{10,})$";
         CharSequence input = pass;
@@ -142,7 +142,7 @@ public class DefendIt
         return false;
     }
 
-    public static String getSalt(int length)
+    private static String getSalt(int length)
     {
         StringBuilder val = new StringBuilder(length);
         for (int i = 0; i < length; i++)
@@ -151,7 +151,7 @@ public class DefendIt
         return new String(val);
     }
 
-    public static byte[] hash(char[] pass, byte[] salt)
+    private static byte[] hash(char[] pass, byte[] salt)
     {
         PBEKeySpec key = new PBEKeySpec(pass, salt, ITERATIONS, KEY_LENGTH);
         Arrays.fill(pass, Character.MIN_VALUE);
@@ -170,13 +170,13 @@ public class DefendIt
         }
     }
 
-    public static String generateSecurePass(String pass, String salt)
+    private static String generateSecurePass(String pass, String salt)
     {
         byte[] securePass = hash(pass.toCharArray(), salt.getBytes());
         return Base64.getEncoder().encodeToString(securePass);
     }
 
-    public static boolean verifyPass(String providedPass, String securedPass, String salt)
+    private static boolean verifyPass(String providedPass, String securedPass, String salt)
     {
         String newPass = generateSecurePass(providedPass, salt);
         if(newPass.equalsIgnoreCase(securedPass))
@@ -184,7 +184,7 @@ public class DefendIt
         return false;
     }
 
-    public static BigInteger getInt(){
+    private static BigInteger getInt(){
 
         System.out.println("Please enter an integer between −2,147,483,648 and 2,147,483,647");
 
@@ -203,7 +203,7 @@ public class DefendIt
 
     }
 
-    public static boolean checkInt(BigInteger int1){
+    private static boolean checkInt(BigInteger int1){
 
         if(int1 == null || int1.compareTo(new BigInteger("-2147483648")) < 0 || int1.compareTo(new BigInteger("2147483647")) > 0){
             System.out.println("Invalid range\n");
@@ -214,13 +214,13 @@ public class DefendIt
 
     }
 
-    public static String getInput()
+    private static String getInput()
     {
         System.out.print("Please enter the name of an Input File (Must be .txt, must already exist, the only special characters allowed are underscores and dashes, and must be in the current directory): ");
         return kb.nextLine();
     }
 
-    public static boolean checkInput(String input)
+    private static boolean checkInput(String input)
     {
         File tmp = new File(input);
         boolean exists = tmp.exists();
@@ -238,13 +238,13 @@ public class DefendIt
         return input.matches(regex);
     }
 
-    public static String getOutput()
+    private static String getOutput()
     {
         System.out.print("Please enter the name of an Output File (Must be .txt, must not already exist, the only special characters allowed are underscores and dashes, and must be directed to the current directory): ");
         return kb.nextLine();
     }
 
-    public static boolean checkOutput(String output)
+    private static boolean checkOutput(String output)
     {
         File tmp = new File(output);
         if(tmp.exists())
@@ -261,7 +261,7 @@ public class DefendIt
         return output.matches(regex);
     }
 
-    public static BufferedReader readFromFile(File inputFile){
+    private static BufferedReader readFromFile(File inputFile){
 
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;
@@ -278,14 +278,14 @@ public class DefendIt
         return bufferedReader;
     }
 
-    public static File openFile(String filename){
+    private static File openFile(String filename){
 
         File inputFile = new File(filename);
         return inputFile;
 //
     }
 
-    public static BufferedWriter writeToFile(File outputFile){
+    private static BufferedWriter writeToFile(File outputFile){
 //
         FileWriter fileWriter = null;
         BufferedWriter bufferedWriter = null;
