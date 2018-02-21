@@ -6,8 +6,6 @@ import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
-import java.text.*;
-import java.text.Normalizer.Form;
 
 public class DefendIt
 {
@@ -84,23 +82,22 @@ public class DefendIt
         if(writer == null){
             System.out.println("Should never reach this statement");
         }
-        else{
-            try {
-                writer.write(Fname + " " + Lname + "\n");
-                writer.write(""+passedInt1.add(passedInt2) + "\n");
-                writer.write(""+passedInt1.multiply(passedInt2) + "\n");
-                while(reader.ready()){
+        else try {
+            writer.write(Fname + " " + Lname + "\n");
+            writer.write("" + passedInt1.add(passedInt2) + "\n");
+            writer.write("" + passedInt1.multiply(passedInt2) + "\n");
+            if(reader != null) {
+                while (reader.ready()) {
                     writer.write("" + reader.readLine() + "\n");
                 }
-
-                writer.close();
-
-            }
-            catch (IOException e){
-                System.out.println("Should never reach this statement either.");
             }
 
+            writer.close();
+
+        } catch (IOException e) {
+            System.out.println("Should never reach this statement either.");
         }
+
         System.exit(0);
     }
 
@@ -117,12 +114,9 @@ public class DefendIt
 
 
         String exp = "^(?![0-9])[-\\w]*$";
-        CharSequence input = name;
         Pattern pattern = Pattern.compile(exp);
-        Matcher matcher = pattern.matcher(input);
-        if(matcher.matches())
-            return true;
-        return false;
+        Matcher matcher = pattern.matcher(name);
+        return matcher.matches();
     }
 
     private static String getPassword()
@@ -134,12 +128,9 @@ public class DefendIt
     private static boolean checkPass(String pass)
     {
         String exp = "^((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%]).{10,})$";
-        CharSequence input = pass;
         Pattern pattern = Pattern.compile(exp);
-        Matcher matcher = pattern.matcher(input);
-        if(matcher.matches())
-            return true;
-        return false;
+        Matcher matcher = pattern.matcher(pass);
+        return matcher.matches();
     }
 
     private static String getSalt(int length)
@@ -179,16 +170,14 @@ public class DefendIt
     private static boolean verifyPass(String providedPass, String securedPass, String salt)
     {
         String newPass = generateSecurePass(providedPass, salt);
-        if(newPass.equalsIgnoreCase(securedPass))
-            return true;
-        return false;
+        return newPass.equalsIgnoreCase(securedPass);
     }
 
     private static BigInteger getInt(){
 
         System.out.println("Please enter an integer between −2,147,483,648 and 2,147,483,647");
 
-        BigInteger int1 = BigInteger.ZERO;
+        BigInteger int1;
 
         try{
             String input = kb.nextLine();
@@ -196,7 +185,7 @@ public class DefendIt
         }
         catch (NumberFormatException e){
             System.out.println("Check your int... were there any letters or symbols in it?");
-            return null;
+            int1 = null;
         }
 
         return int1;
@@ -263,7 +252,7 @@ public class DefendIt
 
     private static BufferedReader readFromFile(File inputFile){
 
-        FileReader fileReader = null;
+        FileReader fileReader;
         BufferedReader bufferedReader = null;
 
         if(inputFile.exists() && inputFile.isFile()){
@@ -280,14 +269,13 @@ public class DefendIt
 
     private static File openFile(String filename){
 
-        File inputFile = new File(filename);
-        return inputFile;
+        return new File(filename);
 //
     }
 
     private static BufferedWriter writeToFile(File outputFile){
 //
-        FileWriter fileWriter = null;
+        FileWriter fileWriter;
         BufferedWriter bufferedWriter = null;
 
         if(!outputFile.exists()) {
